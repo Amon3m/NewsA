@@ -8,7 +8,7 @@ import java.nio.channels.spi.AbstractSelectionKey
 
 interface WebServices {
 
-    @GET
+    @GET("top-headlines/sources")
     fun getNewsSources(
             @Query("apiKey")key: String,
             @Query("language")lang: String,

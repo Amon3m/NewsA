@@ -21,16 +21,16 @@ class ApiManger {
                 //                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                 val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
-                retrofit=Retrofit.Builder().client(client).baseUrl("")
+                retrofit=Retrofit.Builder().client(client).baseUrl("https://newsapi.org/v2/")
                     .addConverterFactory(GsonConverterFactory.create()).build()
             }
             return retrofit!!
         }
 
-
+        fun getApis():WebServices{
+            return retrofitGetInstance().create(WebServices::class.java)
+        }
 
     }
-    fun getApis():WebServices{
-        return retrofitGetInstance().create(WebServices::class.java)
-    }
+
 }
