@@ -1,7 +1,6 @@
 package com.m3.newsapp
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.tabs.TabLayout
@@ -19,11 +18,18 @@ import retrofit2.Response
 
 class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
     lateinit var binding: ActivityHomeBinding
+    lateinit var adapter: NewsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getSources()
+        setUpViews()
+    }
+
+    private fun setUpViews() {
+    adapter= NewsAdapter(null)
+        binding.recyclerview.adapter=adapter
     }
 
     private fun getSources() {
@@ -67,7 +73,7 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
         sources?.forEach{item->
 
             val tab=binding.tablayot.newTab()
-            tab.tag=item
+            tab.setTag(item)
             tab.text = item?.name
             binding.tablayot.addTab(tab)
         }
@@ -120,9 +126,9 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
     override fun onTabReselected(tab: TabLayout.Tab?) {
     }
 
-
+    fun ShowNewsInRecyclerView(newslist: List<ArticlesItem?>?) {
+        adapter.changeData(newslist)
+    }
 }
 
-class ShowNewsInRecyclerView(articles: List<ArticlesItem?>?) {
 
-}

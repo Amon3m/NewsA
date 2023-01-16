@@ -21,7 +21,7 @@ interface WebServices {
         @Query("apiKey")key: String,
         @Query("language")lang: String,
         @Query("q")searchKeyword: String,
-        @Query("source")source: String
+        @Query("sources")source: String
     ):Call<NewsResponse>
 }
 
