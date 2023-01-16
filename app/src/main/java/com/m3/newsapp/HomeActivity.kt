@@ -3,6 +3,7 @@ package com.m3.newsapp
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import com.google.android.material.tabs.TabLayout
 import com.m3.islami2.base.BaseActivity
 import com.m3.newsapp.api.ApiManger
@@ -78,6 +79,7 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
             binding.tablayot.addTab(tab)
         }
         binding.tablayot.addOnTabSelectedListener(this)
+        binding.tablayot.getTabAt(0)?.select()
     }
 
 
@@ -87,6 +89,8 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
     }
 
     private fun getNews(sourceID: String?) {
+        adapter.changeData(null)
+        binding.progressBar.visibility=View.VISIBLE
 
         ApiManger.getApis().getNews(Constance.apiKey,"en","",sourceID?:"")
             .enqueue(object :Callback<NewsResponse>{
@@ -96,8 +100,12 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
                 ) {
                     if(response.isSuccessful){
                         ShowNewsInRecyclerView(response.body()?.articles)
+                        binding.progressBar.visibility=View.GONE
+
                     }
                     else{
+                        binding.progressBar.visibility=View.GONE
+
                         showDialoge(message = response.body()?.message?:"",
                             posActionName = getString(R.string.ok)
                             , posAction = DialogInterface.OnClickListener { dialog, which ->
@@ -124,6 +132,8 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
+        val item=tab?.tag as SourcesItem
+        getNews(item.id)
     }
 
     fun ShowNewsInRecyclerView(newslist: List<ArticlesItem?>?) {

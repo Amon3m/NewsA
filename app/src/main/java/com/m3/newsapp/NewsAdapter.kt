@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.m3.newsapp.api.model.ArticlesItem
 
 class NewsAdapter( var newslist:List<ArticlesItem?>?) :RecyclerView.Adapter<NewsAdapter.ViewHolder>(){
@@ -29,7 +30,8 @@ class NewsAdapter( var newslist:List<ArticlesItem?>?) :RecyclerView.Adapter<News
         holder.date.setText(newsItem?.publishedAt)
         holder.title.setText(newsItem?.title)
         holder.desc.setText(newsItem?.description)
-
+        Glide.with(holder.itemView).load(newsItem?.urlToImage)
+            .into(holder.image)
 
 
 
