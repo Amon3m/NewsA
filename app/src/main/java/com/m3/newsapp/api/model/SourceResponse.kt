@@ -11,8 +11,8 @@ data class SourceResponse(
 	val status: String? = null,
 
 	@field:SerializedName("code")
-	val code: List<SourcesItem?>? = null,
+	val code: String? = null,
 	@field:SerializedName("message")
-	val message: List<SourcesItem?>? = null,
+	val message: String? = null,
 
 )
