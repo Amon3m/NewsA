@@ -1,6 +1,9 @@
 package com.m3.newsapp
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.get
@@ -16,6 +19,7 @@ import com.m3.newsapp.databinding.ActivityHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.Serializable
 
 class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
     lateinit var binding: ActivityHomeBinding
@@ -138,7 +142,19 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
 
     fun ShowNewsInRecyclerView(newslist: List<ArticlesItem?>?) {
         adapter.changeData(newslist)
+        adapter.onItemClickListener=object :NewsAdapter.OnItemClickListener{
+
+
+            override fun onItemClick(position: Int, newsItem: ArticlesItem?) {
+                val intent = Intent(this@HomeActivity, NewsDetailsActivity::class.java)
+                intent.putExtra(Constance.ITEM_EXTRA,newsItem)
+//                intent.putExtra(Constance.CONTENT,newsItem?.content)
+//                intent.putExtra(Constance.AUTHOR,newsItem?.author)
+                startActivity(intent)
+            }
+        }
     }
+
 }
 
 
