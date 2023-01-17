@@ -1,8 +1,9 @@
 package com.m3.newsapp.api.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-data class ArticlesItem(
+data class ArticlesItem (
 
 	@field:SerializedName("publishedAt")
 	val publishedAt: String? = null,
@@ -27,4 +28,4 @@ data class ArticlesItem(
 
 	@field:SerializedName("content")
 	val content: String? = null
-)
+):java.io.Serializable

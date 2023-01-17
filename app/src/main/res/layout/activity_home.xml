@@ -19,6 +19,25 @@
 
         app:tabMode="scrollable"
         app:tabTextColor="@color/light_blue" />
+    <EditText
+        android:id="@+id/text_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tablayot"
+        android:hint="search"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@id/search_button"
+        />
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tablayot"
+        android:text="search"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/blue"/>
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -33,7 +52,7 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/tablayot"
+        app:layout_constraintTop_toBottomOf="@+id/text_search"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"/>

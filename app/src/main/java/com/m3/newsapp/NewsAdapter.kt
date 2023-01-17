@@ -27,11 +27,17 @@ class NewsAdapter( var newslist:List<ArticlesItem?>?) :RecyclerView.Adapter<News
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val newsItem= newslist?.get(position)
-        holder.date.setText(newsItem?.publishedAt)
-        holder.title.setText(newsItem?.title)
-        holder.desc.setText(newsItem?.description)
+        holder.date.text = newsItem?.publishedAt
+        holder.title.text = newsItem?.title
+        holder.desc.text = newsItem?.description
         Glide.with(holder.itemView).load(newsItem?.urlToImage)
             .into(holder.image)
+        if (onItemClickListener != null)
+            holder.itemView.setOnClickListener {
+                onItemClickListener?.onItemClick(position, newsItem)
+            }
+
+
 
 
 
@@ -42,6 +48,11 @@ class NewsAdapter( var newslist:List<ArticlesItem?>?) :RecyclerView.Adapter<News
         notifyDataSetChanged()
     }
 
+    var onItemClickListener:OnItemClickListener?=null
+
+    interface OnItemClickListener{
+        fun onItemClick(position: Int,newsItem:ArticlesItem?)
+    }
     override fun getItemCount(): Int {
     return newslist?.size?:0
         }
