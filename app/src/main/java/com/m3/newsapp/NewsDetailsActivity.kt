@@ -28,6 +28,7 @@ class NewsDetailsActivity : AppCompatActivity() {
 
 
 
+
         val url=item?.url
         val textView =binding.url
         textView.isClickable = true

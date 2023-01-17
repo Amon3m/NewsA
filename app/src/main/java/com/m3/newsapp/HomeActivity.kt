@@ -30,6 +30,7 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
         setContentView(binding.root)
         getSources()
         setUpViews()
+
     }
 
     private fun setUpViews() {
@@ -84,15 +85,18 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
         }
         binding.tablayot.addOnTabSelectedListener(this)
         binding.tablayot.getTabAt(0)?.select()
+
     }
 
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
         val item=tab?.tag as SourcesItem
         getNews(item.id)
+        newsSearch(item)
     }
 
     private fun getNews(sourceID: String?) {
+
         adapter.changeData(null)
         binding.progressBar.visibility=View.VISIBLE
 
@@ -130,14 +134,66 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
             })
     }
 
+    private fun newsSearch(item:SourcesItem) {
+
+        var sourceID=item.id
+        if (sourceID==null){
+            sourceID="abc-news"
+        }
+
+        binding.searchButton.setOnClickListener {
+
+
+        adapter.changeData(null)
+        binding.progressBar.visibility=View.VISIBLE
+            val keyWord=binding.textSearch.text.toString()
+        ApiManger.getApis().getNews(Constance.apiKey,"en",keyWord,sourceID?:"")
+            .enqueue(object :Callback<NewsResponse>{
+                override fun onResponse(
+                    call: Call<NewsResponse>,
+                    response: Response<NewsResponse>
+                ) {
+                    if(response.isSuccessful){
+                        ShowNewsInRecyclerView(response.body()?.articles)
+                        binding.progressBar.visibility=View.GONE
+
+                    }
+                    else{
+                        binding.progressBar.visibility=View.GONE
+
+                        showDialoge(message = response.body()?.message?:"",
+                            posActionName = getString(R.string.ok)
+                            , posAction = DialogInterface.OnClickListener { dialog, which ->
+                                //  call.enqueue(this)
+                                call.clone().enqueue(this)
+                                dialog.dismiss()
+                            })}
+                }
+
+                override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                    showDialoge(message = t.localizedMessage as String,
+                        posActionName = getString(R.string.retry)
+                        , posAction = DialogInterface.OnClickListener { dialog, which ->
+                            call.clone().enqueue(this)
+                            dialog.dismiss()
+                        })
+                }
+            })
+
+    }
+    }
+
 
     //,,,,,,,,,,,,,,
     override fun onTabUnselected(tab: TabLayout.Tab?) {
+
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
         val item=tab?.tag as SourcesItem
         getNews(item.id)
+        newsSearch(item)
+
     }
 
     fun ShowNewsInRecyclerView(newslist: List<ArticlesItem?>?) {
@@ -154,6 +210,7 @@ class HomeActivity : BaseActivity() ,TabLayout.OnTabSelectedListener{
             }
         }
     }
+
 
 }
 
